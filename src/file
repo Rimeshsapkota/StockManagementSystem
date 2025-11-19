@@ -1,0 +1,72 @@
+tablename:
+Requirement:
+login into your application
+should be able to make a buy or sell order
+they should be see their current balances
+they should be able to load into wallet and make payment
+they should  be able to see the transaction history
+
+user table:
+firstName
+middleName
+lastName
+createdDate
+updatedDate
+numberOfKitta
+forgetPasswordCode---for temporary store the code using some job por schedule funcionality
+
+stock_detail table
+stockPrice
+stockName
+stockBuyDate
+stockSellDate
+userId(foreign key of the user table)
+statusOfTheStock-->it means buy or sell
+numberOfKittaToBeSell---
+
+fund table:
+loadAmountInTheStock
+userId-(foreign key)
+stock_detail_id(foreign key)
+deductedAmountAfterBuyingStock
+
+wallet_table
+walletName
+amountloadFromWallet
+user_id(foreign key)
+
+API1:
+@RequestMaping("api/stock")
+Get("/get_all_stock")---list of stock with all detail
+Post("/create_account")----->register the user
+Get("/load_amount")---->call the third party api it means the wallet or banking system api
+Post("/order")--->RequestMapping(orderId)--->buying the stock
+Post("/store/stockList")----->store the list of the stock
+Get("status")----->order share by the user is approve or not(we can use job or schedule or call the api at fix interval of time to check the status)
+Post("/update_amount")
+
+header:implement the jwt token to authorized the user(Bearer toke)
+{
+ nameOfStock
+ amount
+ status:buying or selling
+}
+1.Authorized of the user
+2.check the amount loaded in the stock wallet
+3.if the amount is enough then deduct the amount from the stock wallet
+4.verify the status of the number of kitta in your account
+5.third party api call using resttemplate
+
+
+nameOfBuyer:authorized user
+numberOfKittatheybuy:50
+
+
+anup@ramailo.tech
+saurav.b@ramailo.tech
+rajesh@ramailo.tech
+admin@ramailo.tech
+
+
+
+
