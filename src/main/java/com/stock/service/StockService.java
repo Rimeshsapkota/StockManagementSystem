@@ -132,5 +132,40 @@ public class StockService {
             stockRepo.save(sd);
         }
     }
+
+    /**
+     * Verifies if the user has enough stock units (kitta) to sell
+     *
+     * @param userId - user who wants to sell
+     * @param stockName - stock they want to sell
+     * @param kittaToSell - number of kitta to sell
+     * @throws RuntimeException if not enough kitta
+     */
+    @Transactional(readOnly = true)
+    public void verifyUserKitta(Long userId, String stockName, int kittaToSell) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Sum all stocks with the same name and status "BUY"
+        Integer totalKittaOwned = stockRepo.findTotalKittaByUserAndStockName(userId, stockName);
+        if (totalKittaOwned == null) totalKittaOwned = 0;
+
+        if (totalKittaOwned < kittaToSell) {
+            throw new RuntimeException("Insufficient number of kitta. You have "
+                    + totalKittaOwned + ", trying to sell " + kittaToSell);
+        }
+    }
+    /**
+     * Get User ID by username
+     * @param username - the username of the logged-in user
+     * @return Long - user ID
+     * @throws RuntimeException if user not found
+     */
+    public Long getUserIdByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+        return user.getId();
+    }
 }
+
 

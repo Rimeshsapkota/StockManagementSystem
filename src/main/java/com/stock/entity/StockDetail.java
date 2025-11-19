@@ -16,6 +16,7 @@ public class StockDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String stockName;
+    private Integer numberOfKitta;        // total bought
     private Double stockPrice;
     private LocalDateTime stockBuyDate;
     private LocalDateTime stockSellDate;

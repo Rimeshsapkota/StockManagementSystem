@@ -1,6 +1,7 @@
 package com.stock.controller;
 
 import com.stock.dto.*;
+import com.stock.entity.VerifyKittaRequest;
 import com.stock.service.AuthService;
 import com.stock.service.StockService;
 import com.stock.service.WalletService;
@@ -62,6 +63,22 @@ public class StockController {
     public ResponseEntity<?> updateAmount(@RequestBody UpdateAmountDto dto, Principal p){
         walletService.updateAmount(p.getName(), dto.getAmount());
         return ResponseEntity.ok("Updated");
+    }
+
+    /**
+     * Verify if user has enough kitta for a stock
+     */
+    @PostMapping("/verify-kitta")
+    public ResponseEntity<?> verifyKitta(@RequestBody VerifyKittaRequest request, Principal principal) {
+        try {
+            // Assuming principal.getName() returns the username
+            Long userId = stockService.getUserIdByUsername(principal.getName());
+            stockService.verifyUserKitta(userId, request.getStockName(), request.getNumberOfKitta());
+
+            return ResponseEntity.ok("You have enough kitta to sell.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
 
