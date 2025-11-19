@@ -24,7 +24,6 @@ public class AuthService {
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    // Register user
     public String register(RegisterRequest req) {
         if (userRepository.findByUsername(req.getUsername()).isPresent()) {
             return "User already exists!";

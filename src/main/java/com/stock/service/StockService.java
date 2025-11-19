@@ -47,16 +47,15 @@ public class StockService {
         Wallet wallet = walletRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("Wallet not found"));
 
-        // Check sufficient wallet balance
         if (wallet.getAmount() < req.getAmount()) {
+           double totalRemainingAmount= wallet.getAmount()- req.getAmount();
+           wallet.setAmount(totalRemainingAmount);
             throw new RuntimeException("Insufficient funds in wallet");
         }
 
-        // Deduct wallet amount
         wallet.setAmount(wallet.getAmount() - req.getAmount());
         walletRepository.save(wallet);
 
-        // Store pending stock order
         StockDetail sd = new StockDetail();
         sd.setStockName(req.getNameOfStock());
         sd.setStockPrice(req.getAmount());

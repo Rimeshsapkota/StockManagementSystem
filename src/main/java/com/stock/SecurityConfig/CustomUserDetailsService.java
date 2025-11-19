@@ -2,6 +2,7 @@ package com.stock.SecurityConfig;
 
 import com.stock.dto.CustomUserDetails;
 import com.stock.entity.User;
+import com.stock.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +15,7 @@ import java.util.Optional;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private com.stock.repository.UserRepository userRepository;
+    private UserRepository userRepository;
 
     /**
      * Loads user by username (email or phone) for authentication
